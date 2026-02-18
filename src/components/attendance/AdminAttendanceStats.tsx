@@ -34,13 +34,13 @@ export default function AdminAttendanceStats({ attendances }: AdminAttendanceSta
         <CardContent className="pt-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Total Records</p>
-              <p className="text-2xl font-bold mt-1">{stats.totalRecords}</p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-sm text-[#64748B] dark:text-[#94A3B8]">Total Records</p>
+              <p className="text-2xl font-bold mt-1 text-[#0F172A] dark:text-[#F1F5F9]">{stats.totalRecords}</p>
+              <p className="text-xs text-[#64748B] dark:text-[#94A3B8] mt-1">
                 {stats.uniqueEmployees} employee{stats.uniqueEmployees !== 1 ? "s" : ""}
               </p>
             </div>
-            <Users className="h-8 w-8 text-blue-500" />
+            <Users className="h-8 w-8 text-[#2563EB] dark:text-[#3B82F6]" />
           </div>
         </CardContent>
       </Card>
@@ -49,15 +49,15 @@ export default function AdminAttendanceStats({ attendances }: AdminAttendanceSta
         <CardContent className="pt-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Total Hours</p>
-              <p className="text-2xl font-bold mt-1">
+              <p className="text-sm text-[#64748B] dark:text-[#94A3B8]">Total Hours</p>
+              <p className="text-2xl font-bold mt-1 text-[#0F172A] dark:text-[#F1F5F9]">
                 {formatHours(stats.totalHours)}
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-[#64748B] dark:text-[#94A3B8] mt-1">
                 Avg: {formatHours(averageHours)}
               </p>
             </div>
-            <Clock className="h-8 w-8 text-green-500" />
+            <Clock className="h-8 w-8 text-[#10B981] dark:text-[#10B981]" />
           </div>
         </CardContent>
       </Card>
@@ -66,9 +66,9 @@ export default function AdminAttendanceStats({ attendances }: AdminAttendanceSta
         <CardContent className="pt-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Attendance Rate</p>
-              <p className="text-2xl font-bold mt-1">{attendanceRate}%</p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-sm text-[#64748B] dark:text-[#94A3B8] font-medium">Attendance Rate</p>
+              <p className="text-2xl font-bold mt-1 text-[#0F172A] dark:text-[#F1F5F9]">{attendanceRate}%</p>
+              <p className="text-xs text-[#64748B] dark:text-[#94A3B8] mt-1">
                 {stats.presentCount} present, {stats.lateCount} late
               </p>
             </div>
@@ -81,15 +81,15 @@ export default function AdminAttendanceStats({ attendances }: AdminAttendanceSta
         <CardContent className="pt-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Issues</p>
-              <p className="text-2xl font-bold mt-1">
+              <p className="text-sm text-[#64748B] dark:text-[#94A3B8]">Issues</p>
+              <p className="text-2xl font-bold mt-1 text-[#0F172A] dark:text-[#F1F5F9]">
                 {stats.absentCount + stats.incompleteCount}
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-[#64748B] dark:text-[#94A3B8] mt-1">
                 {stats.absentCount} absent, {stats.incompleteCount} incomplete
               </p>
             </div>
-            <CheckCircle className="h-8 w-8 text-orange-500" />
+            <CheckCircle className="h-8 w-8 text-[#F59E0B] dark:text-[#F59E0B]" />
           </div>
         </CardContent>
       </Card>

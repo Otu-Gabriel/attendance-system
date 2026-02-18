@@ -1,26 +1,179 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Corporate Blue Theme - Light Mode */
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  
+  /* Primary Colors */
+  --primary: #2563EB;
+  --primary-dark: #1E40AF;
+  --primary-light: #3B82F6;
+  
+  /* Status Colors */
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --info: #2563EB;
+  
+  /* Neutral Colors */
+  --neutral: #64748B;
+  --neutral-light: #94A3B8;
+  --neutral-dark: #475569;
+  
+  /* Surface Colors */
+  --surface: #FFFFFF;
+  --surface-hover: #F1F5F9;
+  --border: #E2E8F0;
+  
+  /* Text Colors */
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-tertiary: #64748B;
+}
+
+/* Dark Mode - Applied when .dark class is on html element */
+.dark {
+  /* Corporate Blue Theme - Dark Mode */
+  --background: #0F172A;
+  --foreground: #F1F5F9;
+  
+  /* Primary Colors */
+  --primary: #3B82F6;
+  --primary-dark: #2563EB;
+  --primary-light: #60A5FA;
+  
+  /* Status Colors */
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --info: #3B82F6;
+  
+  /* Neutral Colors */
+  --neutral: #94A3B8;
+  --neutral-light: #CBD5E1;
+  --neutral-dark: #64748B;
+  
+  /* Surface Colors */
+  --surface: #1E293B;
+  --surface-hover: #334155;
+  --border: #334155;
+  
+  /* Text Colors */
+  --text-primary: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --text-tertiary: #94A3B8;
+}
+
+/* Fallback for system preference when no manual selection */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    /* Corporate Blue Theme - Dark Mode */
+    --background: #0F172A;
+    --foreground: #F1F5F9;
+    
+    /* Primary Colors */
+    --primary: #3B82F6;
+    --primary-dark: #2563EB;
+    --primary-light: #60A5FA;
+    
+    /* Status Colors */
+    --success: #10B981;
+    --warning: #F59E0B;
+    --error: #EF4444;
+    --info: #3B82F6;
+    
+    /* Neutral Colors */
+    --neutral: #94A3B8;
+    --neutral-light: #CBD5E1;
+    --neutral-dark: #64748B;
+    
+    /* Surface Colors */
+    --surface: #1E293B;
+    --surface-hover: #334155;
+    --border: #334155;
+    
+    /* Text Colors */
+    --text-primary: #F1F5F9;
+    --text-secondary: #CBD5E1;
+    --text-tertiary: #94A3B8;
+  }
 }
 
 @theme inline {
+  /* Base Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  
+  /* Primary Palette */
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-light: var(--primary-light);
+  
+  /* Status Colors */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-info: var(--info);
+  
+  /* Neutral Palette */
+  --color-neutral: var(--neutral);
+  --color-neutral-light: var(--neutral-light);
+  --color-neutral-dark: var(--neutral-dark);
+  
+  /* Surface Colors */
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  
+  /* Text Colors */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  
+  /* Fonts */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--neutral);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neutral-dark);
+}
+
+/* Scrollbar utility classes */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgb(226, 232, 240);
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgb(51, 65, 85);
+}
+
+.scrollbar-track-transparent::-webkit-scrollbar-track {
+  background: transparent;
 }

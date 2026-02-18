@@ -9,6 +9,7 @@ import Button from "@/components/ui/Button";
 import AttendanceStats from "@/components/attendance/AttendanceStats";
 import QuickFilters from "@/components/attendance/QuickFilters";
 import AttendanceTable from "@/components/attendance/AttendanceTable";
+import DateGroupedEmployeeAttendance from "@/components/attendance/DateGroupedEmployeeAttendance";
 import { Calendar, ArrowLeft, Download, Filter } from "lucide-react";
 import Link from "next/link";
 
@@ -23,6 +24,7 @@ export default function EmployeeHistoryPage() {
   });
   const [groupBy, setGroupBy] = useState<"none" | "week" | "month">("none");
   const [showFilters, setShowFilters] = useState(false);
+  const [viewMode, setViewMode] = useState<"grouped" | "table">("grouped");
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -104,10 +106,10 @@ export default function EmployeeHistoryPage() {
 
   if (status === "loading" || isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-[#F8FAFC] dark:bg-[#0F172A]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 dark:border-white mx-auto mb-4"></div>
-          <p>Loading attendance records...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2563EB] dark:border-[#3B82F6] mx-auto mb-4"></div>
+          <p className="text-[#64748B] dark:text-[#94A3B8]">Loading attendance records...</p>
         </div>
       </div>
     );
@@ -140,8 +142,10 @@ export default function EmployeeHistoryPage() {
             </Button>
           </div>
         </div>
-        <h1 className="text-3xl font-bold">Attendance History</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-[#2563EB] to-[#3B82F6] bg-clip-text text-transparent">
+          Attendance History
+        </h1>
+        <p className="text-[#64748B] dark:text-[#94A3B8] mt-2 text-lg">
           View and analyze your attendance records
         </p>
       </div>
@@ -223,26 +227,46 @@ export default function EmployeeHistoryPage() {
             <CardTitle>
               Attendance Records ({attendances.length})
             </CardTitle>
-            {!showFilters && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowFilters(true)}
-              >
-                <Filter className="h-4 w-4 mr-2" />
-                Filters
-              </Button>
-            )}
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 border border-[#E2E8F0] dark:border-[#334155] rounded-lg p-1">
+                <Button
+                  variant={viewMode === "grouped" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setViewMode("grouped")}
+                  className="h-8"
+                >
+                  Grouped by Date
+                </Button>
+                <Button
+                  variant={viewMode === "table" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setViewMode("table")}
+                  className="h-8"
+                >
+                  Table View
+                </Button>
+              </div>
+              {!showFilters && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowFilters(true)}
+                >
+                  <Filter className="h-4 w-4 mr-2" />
+                  Filters
+                </Button>
+              )}
+            </div>
           </div>
         </CardHeader>
         <CardContent>
           {attendances.length === 0 ? (
             <div className="text-center py-12">
-              <Calendar className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-              <p className="text-lg font-medium text-gray-500 mb-2">
+              <Calendar className="h-16 w-16 text-[#64748B] dark:text-[#94A3B8] mx-auto mb-4" />
+              <p className="text-lg font-medium text-[#0F172A] dark:text-[#F1F5F9] mb-2">
                 No attendance records found
               </p>
-              <p className="text-sm text-gray-400 mb-4">
+              <p className="text-sm text-[#64748B] dark:text-[#94A3B8] mb-4">
                 {filters.startDate || filters.endDate
                   ? "Try adjusting your date filters or select a different time period"
                   : "Your attendance records will appear here once you start marking attendance"}
@@ -256,6 +280,8 @@ export default function EmployeeHistoryPage() {
                 </Button>
               ) : null}
             </div>
+          ) : viewMode === "grouped" ? (
+            <DateGroupedEmployeeAttendance attendances={attendances} />
           ) : (
             <AttendanceTable
               attendances={attendances}

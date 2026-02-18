@@ -2,10 +2,8 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { signOut } from "next-auth/react";
-import Button from "@/components/ui/Button";
-import { User, Clock, LogOut, Home, Calendar } from "lucide-react";
+import DashboardLayout from "@/components/layout/DashboardLayout";
+import { Home, Clock, Calendar } from "lucide-react";
 
 export default function EmployeeLayout({
   children,
@@ -17,8 +15,11 @@ export default function EmployeeLayout({
 
   if (status === "loading") {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p>Loading...</p>
+      <div className="flex min-h-screen items-center justify-center bg-[#F8FAFC] dark:bg-[#0F172A]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2563EB] mx-auto mb-4"></div>
+          <p className="text-[#64748B] dark:text-[#94A3B8]">Loading...</p>
+        </div>
       </div>
     );
   }
@@ -33,56 +34,23 @@ export default function EmployeeLayout({
     return null;
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black">
-      <nav className="border-b bg-white dark:bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center gap-6">
-              <Link href="/employee/dashboard" className="text-xl font-bold">
-                Attendance System
-              </Link>
-              <div className="hidden md:flex gap-4">
-                <Link
-                  href="/employee/dashboard"
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
-                >
-                  <Home className="h-4 w-4" />
-                  Dashboard
-                </Link>
-                <Link
-                  href="/employee/attendance"
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
-                >
-                  <Clock className="h-4 w-4" />
-                  Mark Attendance
-                </Link>
-                <Link
-                  href="/employee/history"
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
-                >
-                  <Calendar className="h-4 w-4" />
-                  History
-                </Link>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600 dark:text-gray-400">
-                {session?.user?.name}
-              </span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => signOut({ callbackUrl: "/login" })}
-              >
-                <LogOut className="h-4 w-4 mr-2" />
-                Logout
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
-      <main>{children}</main>
-    </div>
-  );
+  const sidebarItems = [
+    {
+      label: "Dashboard",
+      href: "/employee/dashboard",
+      icon: Home,
+    },
+    {
+      label: "Mark Attendance",
+      href: "/employee/attendance",
+      icon: Clock,
+    },
+    {
+      label: "History",
+      href: "/employee/history",
+      icon: Calendar,
+    },
+  ];
+
+  return <DashboardLayout sidebarItems={sidebarItems}>{children}</DashboardLayout>;
 }

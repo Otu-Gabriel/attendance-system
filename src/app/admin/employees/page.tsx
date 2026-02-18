@@ -161,17 +161,22 @@ export default function AdminEmployeesPage() {
 
   if (status === "loading" || isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p>Loading...</p>
+      <div className="flex min-h-screen items-center justify-center bg-[#F8FAFC] dark:bg-[#0F172A]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2563EB] dark:border-[#3B82F6] mx-auto mb-4"></div>
+          <p className="text-[#64748B] dark:text-[#94A3B8]">Loading...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">Employee Management</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">
+    <>
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-[#2563EB] to-[#3B82F6] bg-clip-text text-transparent">
+          Employee Management
+        </h1>
+        <p className="text-[#64748B] dark:text-[#94A3B8] mt-2 text-lg">
           Manage employees and register their faces
         </p>
       </div>
@@ -203,10 +208,10 @@ export default function AdminEmployeesPage() {
         </CardHeader>
         <CardContent>
           {isAdding && (
-            <form onSubmit={handleSubmit} className="mb-6 space-y-4 p-4 border rounded-lg">
+            <form onSubmit={handleSubmit} className="mb-6 space-y-4 p-4 border border-[#E2E8F0] dark:border-[#334155] rounded-lg bg-[#F8FAFC] dark:bg-[#1E293B]">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="mb-2 block text-sm font-medium">Email *</label>
+                  <label className="mb-2 block text-sm font-medium text-[#0F172A] dark:text-[#F1F5F9]">Email *</label>
                   <Input
                     type="email"
                     value={formData.email}
@@ -301,13 +306,13 @@ export default function AdminEmployeesPage() {
           )}
 
           {employees.length === 0 ? (
-            <p className="text-gray-500">No employees registered</p>
+            <p className="text-[#64748B] dark:text-[#94A3B8]">No employees registered</p>
           ) : (
             <div className="space-y-2">
               {employees.map((employee) => (
                 <div
                   key={employee.id}
-                  className="flex items-center justify-between p-4 border rounded-lg"
+                  className="flex items-center justify-between p-4 border border-[#E2E8F0] dark:border-[#334155] rounded-lg bg-white dark:bg-[#1E293B] hover:bg-[#F8FAFC] dark:hover:bg-[#334155] transition-colors"
                 >
                   <div className="flex items-center gap-4 flex-1">
                     {employee.faceImageUrl && (
@@ -318,27 +323,27 @@ export default function AdminEmployeesPage() {
                       />
                     )}
                     <div className="flex-1">
-                      <h3 className="font-semibold">{employee.name}</h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <h3 className="font-semibold text-[#0F172A] dark:text-[#F1F5F9]">{employee.name}</h3>
+                      <p className="text-sm text-[#64748B] dark:text-[#94A3B8]">
                         {employee.email}
                       </p>
                       {employee.employeeId && (
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-[#64748B] dark:text-[#94A3B8]">
                           ID: {employee.employeeId}
                         </p>
                       )}
                       {employee.department && (
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-[#64748B] dark:text-[#94A3B8]">
                           {employee.department} - {employee.position}
                         </p>
                       )}
                     </div>
                     {employee.isActive ? (
-                      <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+                      <span className="text-xs bg-[#D1FAE5] text-[#065F46] dark:bg-[#064E3B] dark:text-[#6EE7B7] px-2 py-1 rounded font-medium">
                         Active
                       </span>
                     ) : (
-                      <span className="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">
+                      <span className="text-xs bg-[#F1F5F9] text-[#475569] dark:bg-[#334155] dark:text-[#94A3B8] px-2 py-1 rounded font-medium">
                         Inactive
                       </span>
                     )}
@@ -365,6 +370,6 @@ export default function AdminEmployeesPage() {
           )}
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 }

@@ -35,13 +35,13 @@ export default function AttendanceStats({ attendances }: AttendanceStatsProps) {
         <CardContent className="pt-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Total Days</p>
-              <p className="text-2xl font-bold mt-1">{stats.totalDays}</p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-sm text-[#64748B] dark:text-[#94A3B8]">Total Days</p>
+              <p className="text-2xl font-bold mt-1 text-[#0F172A] dark:text-[#F1F5F9]">{stats.totalDays}</p>
+              <p className="text-xs text-[#64748B] dark:text-[#94A3B8] mt-1">
                 {attendances.length} records
               </p>
             </div>
-            <Calendar className="h-8 w-8 text-blue-500" />
+            <Calendar className="h-8 w-8 text-[#2563EB] dark:text-[#3B82F6]" />
           </div>
         </CardContent>
       </Card>
@@ -50,15 +50,15 @@ export default function AttendanceStats({ attendances }: AttendanceStatsProps) {
         <CardContent className="pt-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Total Hours</p>
-              <p className="text-2xl font-bold mt-1">
+              <p className="text-sm text-[#64748B] dark:text-[#94A3B8]">Total Hours</p>
+              <p className="text-2xl font-bold mt-1 text-[#0F172A] dark:text-[#F1F5F9]">
                 {formatHours(stats.totalHours)}
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-[#64748B] dark:text-[#94A3B8] mt-1">
                 Avg: {formatHours(stats.averageHours)}
               </p>
             </div>
-            <Clock className="h-8 w-8 text-green-500" />
+            <Clock className="h-8 w-8 text-[#10B981] dark:text-[#10B981]" />
           </div>
         </CardContent>
       </Card>
@@ -67,13 +67,13 @@ export default function AttendanceStats({ attendances }: AttendanceStatsProps) {
         <CardContent className="pt-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">On-Time Rate</p>
-              <p className="text-2xl font-bold mt-1">{stats.onTimePercentage}%</p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-sm text-[#64748B] dark:text-[#94A3B8]">On-Time Rate</p>
+              <p className="text-2xl font-bold mt-1 text-[#0F172A] dark:text-[#F1F5F9]">{stats.onTimePercentage}%</p>
+              <p className="text-xs text-[#64748B] dark:text-[#94A3B8] mt-1">
                 {stats.lateCount} late arrival{stats.lateCount !== 1 ? "s" : ""}
               </p>
             </div>
-            <TrendingUp className="h-8 w-8 text-purple-500" />
+            <TrendingUp className="h-8 w-8 text-[#2563EB] dark:text-[#3B82F6]" />
           </div>
         </CardContent>
       </Card>
@@ -82,15 +82,15 @@ export default function AttendanceStats({ attendances }: AttendanceStatsProps) {
         <CardContent className="pt-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Status</p>
-              <p className="text-2xl font-bold mt-1">
+              <p className="text-sm text-[#64748B] dark:text-[#94A3B8]">Status</p>
+              <p className="text-2xl font-bold mt-1 text-[#0F172A] dark:text-[#F1F5F9]">
                 {stats.absentCount === 0 ? "Perfect" : `${stats.absentCount} Absent`}
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-[#64748B] dark:text-[#94A3B8] mt-1">
                 {stats.incompleteCount > 0 && `${stats.incompleteCount} incomplete`}
               </p>
             </div>
-            <CheckCircle className="h-8 w-8 text-orange-500" />
+            <CheckCircle className="h-8 w-8 text-[#F59E0B] dark:text-[#F59E0B]" />
           </div>
         </CardContent>
       </Card>

@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { formatDate, formatTime } from "@/lib/utils";
+import { formatDate, formatTime, cn } from "@/lib/utils";
 import { Users, Clock, MapPin, Calendar } from "lucide-react";
 
 export default function AdminDashboardPage() {
@@ -93,54 +93,71 @@ export default function AdminDashboardPage() {
 
   if (status === "loading") {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p>Loading...</p>
+      <div className="flex min-h-screen items-center justify-center bg-[#F8FAFC] dark:bg-[#0F172A]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2563EB] dark:border-[#3B82F6] mx-auto mb-4"></div>
+          <p className="text-[#64748B] dark:text-[#94A3B8]">Loading...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">
-          Welcome back, {session?.user?.name}
+    <>
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-[#2563EB] to-[#3B82F6] bg-clip-text text-transparent">
+          Admin Dashboard
+        </h1>
+        <p className="text-[#64748B] dark:text-[#94A3B8] mt-2 text-lg">
+          Welcome back, <span className="font-semibold text-[#0F172A] dark:text-[#F1F5F9]">{session?.user?.name}</span>
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3 mb-6">
-        <Card>
+      <div className="grid gap-6 md:grid-cols-3 mb-8">
+        <Card className="border-2 border-transparent hover:border-[#2563EB]/20 transition-all duration-300 hover:shadow-lg">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Total Employees</p>
-                <p className="text-2xl font-bold mt-1">{stats.totalEmployees}</p>
+                <p className="text-sm text-[#64748B] dark:text-[#94A3B8] font-medium">Total Employees</p>
+                <p className="text-3xl font-bold mt-2 bg-gradient-to-r from-[#2563EB] to-[#3B82F6] bg-clip-text text-transparent">
+                  {stats.totalEmployees}
+                </p>
               </div>
-              <Users className="h-8 w-8 text-gray-400" />
+              <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-[#2563EB] to-[#3B82F6] flex items-center justify-center shadow-lg">
+                <Users className="h-6 w-6 text-white" />
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-2 border-transparent hover:border-[#10B981]/20 transition-all duration-300 hover:shadow-lg">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Today&apos;s Attendance</p>
-                <p className="text-2xl font-bold mt-1">{stats.todayAttendance}</p>
+                <p className="text-sm text-[#64748B] dark:text-[#94A3B8] font-medium">Today&apos;s Attendance</p>
+                <p className="text-3xl font-bold mt-2 bg-gradient-to-r from-[#10B981] to-[#059669] bg-clip-text text-transparent">
+                  {stats.todayAttendance}
+                </p>
               </div>
-              <Clock className="h-8 w-8 text-gray-400" />
+              <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-[#10B981] to-[#059669] flex items-center justify-center shadow-lg">
+                <Clock className="h-6 w-6 text-white" />
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-2 border-transparent hover:border-[#F59E0B]/20 transition-all duration-300 hover:shadow-lg">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Active Locations</p>
-                <p className="text-2xl font-bold mt-1">{stats.activeLocations}</p>
+                <p className="text-sm text-[#64748B] dark:text-[#94A3B8] font-medium">Active Locations</p>
+                <p className="text-3xl font-bold mt-2 bg-gradient-to-r from-[#F59E0B] to-[#D97706] bg-clip-text text-transparent">
+                  {stats.activeLocations}
+                </p>
               </div>
-              <MapPin className="h-8 w-8 text-gray-400" />
+              <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-[#F59E0B] to-[#D97706] flex items-center justify-center shadow-lg">
+                <MapPin className="h-6 w-6 text-white" />
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -152,27 +169,43 @@ export default function AdminDashboardPage() {
             <CardTitle>Quick Actions</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            <Link href="/admin/employees" className="block">
-              <Card className="p-4 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer">
+            <Link href="/admin/employees" className="block group">
+              <Card className="p-4 hover:bg-gradient-to-r hover:from-[#2563EB]/5 hover:to-[#3B82F6]/5 dark:hover:from-[#2563EB]/10 dark:hover:to-[#3B82F6]/10 cursor-pointer transition-all duration-200 border-2 border-transparent hover:border-[#2563EB]/20">
                 <div className="flex items-center gap-3">
-                  <Users className="h-5 w-5" />
-                  <span>Manage Employees</span>
+                  <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-[#2563EB] to-[#3B82F6] flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Users className="h-5 w-5 text-white" />
+                  </div>
+                  <span className="font-medium text-[#0F172A] dark:text-[#F1F5F9]">Manage Employees</span>
                 </div>
               </Card>
             </Link>
-            <Link href="/admin/attendance" className="block">
-              <Card className="p-4 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer">
+            <Link href="/admin/attendance" className="block group">
+              <Card className="p-4 hover:bg-gradient-to-r hover:from-[#10B981]/5 hover:to-[#059669]/5 dark:hover:from-[#10B981]/10 dark:hover:to-[#059669]/10 cursor-pointer transition-all duration-200 border-2 border-transparent hover:border-[#10B981]/20">
                 <div className="flex items-center gap-3">
-                  <Calendar className="h-5 w-5" />
-                  <span>View Attendance Reports</span>
+                  <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-[#10B981] to-[#059669] flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Calendar className="h-5 w-5 text-white" />
+                  </div>
+                  <span className="font-medium text-[#0F172A] dark:text-[#F1F5F9]">View Attendance Reports</span>
                 </div>
               </Card>
             </Link>
-            <Link href="/admin/settings" className="block">
-              <Card className="p-4 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer">
+            <Link href="/admin/settings" className="block group">
+              <Card className="p-4 hover:bg-gradient-to-r hover:from-[#F59E0B]/5 hover:to-[#D97706]/5 dark:hover:from-[#F59E0B]/10 dark:hover:to-[#D97706]/10 cursor-pointer transition-all duration-200 border-2 border-transparent hover:border-[#F59E0B]/20">
                 <div className="flex items-center gap-3">
-                  <MapPin className="h-5 w-5" />
-                  <span>Location Settings</span>
+                  <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-[#F59E0B] to-[#D97706] flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <MapPin className="h-5 w-5 text-white" />
+                  </div>
+                  <span className="font-medium text-[#0F172A] dark:text-[#F1F5F9]">Location Settings</span>
+                </div>
+              </Card>
+            </Link>
+            <Link href="/admin/attendance-settings" className="block group">
+              <Card className="p-4 hover:bg-gradient-to-r hover:from-[#6366F1]/5 hover:to-[#4F46E5]/5 dark:hover:from-[#6366F1]/10 dark:hover:to-[#4F46E5]/10 cursor-pointer transition-all duration-200 border-2 border-transparent hover:border-[#6366F1]/20">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-[#6366F1] to-[#4F46E5] flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Clock className="h-5 w-5 text-white" />
+                  </div>
+                  <span className="font-medium text-[#0F172A] dark:text-[#F1F5F9]">Attendance Time Settings</span>
                 </div>
               </Card>
             </Link>
@@ -189,29 +222,34 @@ export default function AdminDashboardPage() {
                 {stats.recentAttendance.map((attendance: any) => (
                   <div
                     key={attendance.id}
-                    className="flex items-center justify-between border-b pb-2 last:border-0"
+                    className="flex items-center justify-between border-b border-[#E2E8F0] dark:border-[#334155] pb-2 last:border-0"
                   >
                     <div>
-                      <p className="font-medium">{attendance.user?.name}</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="font-medium text-[#0F172A] dark:text-[#F1F5F9]">{attendance.user?.name}</p>
+                      <p className="text-sm text-[#64748B] dark:text-[#94A3B8]">
                         {formatDate(attendance.date)}
                       </p>
                       {attendance.checkIn && (
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-[#64748B] dark:text-[#94A3B8]">
                           In: {formatTime(attendance.checkIn)}
                         </p>
                       )}
                     </div>
-                    <span className="text-sm text-green-600">{attendance.status}</span>
+                    <span className={cn(
+                      "text-sm font-medium",
+                      attendance.status === "PRESENT" && "text-[#10B981]",
+                      attendance.status === "LATE" && "text-[#F59E0B]",
+                      attendance.status === "ABSENT" && "text-[#EF4444]"
+                    )}>{attendance.status}</span>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500">No recent attendance records</p>
+              <p className="text-[#64748B] dark:text-[#94A3B8]">No recent attendance records</p>
             )}
           </CardContent>
         </Card>
       </div>
-    </div>
+    </>
   );
 }

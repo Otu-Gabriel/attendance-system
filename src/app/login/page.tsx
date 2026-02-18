@@ -45,7 +45,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 dark:bg-black">
+    <div className="flex min-h-screen items-center justify-center bg-[#F8FAFC] px-4 dark:bg-[#0F172A]">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-center">Login</CardTitle>
@@ -55,7 +55,7 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="email"
-                className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="mb-2 block text-sm font-medium text-[#0F172A] dark:text-[#F1F5F9]"
               >
                 Email
               </label>
@@ -71,7 +71,7 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="password"
-                className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="mb-2 block text-sm font-medium text-[#0F172A] dark:text-[#F1F5F9]"
               >
                 Password
               </label>

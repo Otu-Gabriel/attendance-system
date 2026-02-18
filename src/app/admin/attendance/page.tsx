@@ -9,6 +9,7 @@ import Button from "@/components/ui/Button";
 import AdminAttendanceStats from "@/components/attendance/AdminAttendanceStats";
 import QuickFilters from "@/components/attendance/QuickFilters";
 import AdminAttendanceTable from "@/components/attendance/AdminAttendanceTable";
+import DateGroupedAdminAttendance from "@/components/attendance/DateGroupedAdminAttendance";
 import { Calendar, Download, Filter, Search } from "lucide-react";
 
 export default function AdminAttendancePage() {
@@ -24,6 +25,7 @@ export default function AdminAttendancePage() {
   });
   const [showFilters, setShowFilters] = useState(false);
   const [employees, setEmployees] = useState<any[]>([]);
+  const [viewMode, setViewMode] = useState<"table" | "grouped">("grouped");
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -135,10 +137,10 @@ export default function AdminAttendancePage() {
 
   if (status === "loading" || isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-[#F8FAFC] dark:bg-[#0F172A]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 dark:border-white mx-auto mb-4"></div>
-          <p>Loading attendance records...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2563EB] dark:border-[#3B82F6] mx-auto mb-4"></div>
+          <p className="text-[#64748B] dark:text-[#94A3B8]">Loading attendance records...</p>
         </div>
       </div>
     );
@@ -149,8 +151,10 @@ export default function AdminAttendancePage() {
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-3xl font-bold">Attendance Reports</h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-[#2563EB] to-[#3B82F6] bg-clip-text text-transparent">
+              Attendance Reports
+            </h1>
+            <p className="text-[#64748B] dark:text-[#94A3B8] mt-2 text-lg">
               View and manage all employee attendance records
             </p>
           </div>
@@ -213,7 +217,7 @@ export default function AdminAttendancePage() {
               <div>
                 <label className="mb-2 block text-sm font-medium">Employee</label>
                 <select
-                  className="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 dark:border-gray-700 dark:bg-gray-800 dark:focus-visible:ring-gray-300"
+                  className="flex h-10 w-full rounded-lg border border-[#E2E8F0] dark:border-[#334155] bg-white dark:bg-[#1E293B] px-3 py-2 text-sm text-[#0F172A] dark:text-[#F1F5F9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] dark:focus-visible:ring-[#3B82F6] focus-visible:ring-offset-2"
                   value={filters.userId}
                   onChange={(e) =>
                     setFilters({ ...filters, userId: e.target.value })
@@ -231,7 +235,7 @@ export default function AdminAttendancePage() {
             <div className="pt-4 border-t">
               <label className="mb-2 block text-sm font-medium">Search</label>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#64748B] dark:text-[#94A3B8]" />
                 <Input
                   type="text"
                   placeholder="Search by name, email, or employee ID..."
@@ -254,26 +258,46 @@ export default function AdminAttendancePage() {
             <CardTitle>
               Attendance Records ({attendances.length})
             </CardTitle>
-            {!showFilters && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowFilters(true)}
-              >
-                <Filter className="h-4 w-4 mr-2" />
-                Filters
-              </Button>
-            )}
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 border border-[#E2E8F0] dark:border-[#334155] rounded-lg p-1">
+                <Button
+                  variant={viewMode === "grouped" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setViewMode("grouped")}
+                  className="h-8"
+                >
+                  Grouped by Date
+                </Button>
+                <Button
+                  variant={viewMode === "table" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setViewMode("table")}
+                  className="h-8"
+                >
+                  Table View
+                </Button>
+              </div>
+              {!showFilters && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowFilters(true)}
+                >
+                  <Filter className="h-4 w-4 mr-2" />
+                  Filters
+                </Button>
+              )}
+            </div>
           </div>
         </CardHeader>
         <CardContent>
           {attendances.length === 0 ? (
             <div className="text-center py-12">
-              <Calendar className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-              <p className="text-lg font-medium text-gray-500 mb-2">
+              <Calendar className="h-16 w-16 text-[#64748B] dark:text-[#94A3B8] mx-auto mb-4" />
+              <p className="text-lg font-medium text-[#0F172A] dark:text-[#F1F5F9] mb-2">
                 No attendance records found
               </p>
-              <p className="text-sm text-gray-400 mb-4">
+              <p className="text-sm text-[#64748B] dark:text-[#94A3B8] mb-4">
                 {filters.startDate || filters.endDate || filters.userId || filters.searchQuery
                   ? "Try adjusting your filters or search query"
                   : "Attendance records will appear here once employees start marking attendance"}
@@ -287,6 +311,13 @@ export default function AdminAttendancePage() {
                 </Button>
               )}
             </div>
+          ) : viewMode === "grouped" ? (
+            <DateGroupedAdminAttendance
+              attendances={attendances}
+              employees={employees}
+              startDate={filters.startDate}
+              endDate={filters.endDate}
+            />
           ) : (
             <AdminAttendanceTable attendances={attendances} />
           )}

@@ -185,34 +185,39 @@ export default function EmployeeAttendancePage() {
 
   if (status === "loading" || isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p>Loading...</p>
+      <div className="flex min-h-screen items-center justify-center bg-[#F8FAFC] dark:bg-[#0F172A]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2563EB] dark:border-[#3B82F6] mx-auto mb-4"></div>
+          <p className="text-[#64748B] dark:text-[#94A3B8]">Loading...</p>
+        </div>
       </div>
     );
   }
 
   if (!userFaceDescriptor) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <>
         <Card>
           <CardHeader>
-            <CardTitle>Face Not Registered</CardTitle>
+            <CardTitle className="text-[#0F172A] dark:text-[#F1F5F9]">Face Not Registered</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-[#64748B] dark:text-[#94A3B8]">
               Your face has not been registered yet. Please contact your administrator to register your face.
             </p>
           </CardContent>
         </Card>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">Mark Attendance</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">
+    <>
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-[#2563EB] to-[#3B82F6] bg-clip-text text-transparent">
+          Mark Attendance
+        </h1>
+        <p className="text-[#64748B] dark:text-[#94A3B8] mt-2 text-lg">
           Use facial recognition to check in or check out
         </p>
       </div>
@@ -222,8 +227,8 @@ export default function EmployeeAttendancePage() {
         <CardContent className="pt-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Current Status</p>
-              <p className="text-2xl font-bold mt-1">
+              <p className="text-sm text-[#64748B] dark:text-[#94A3B8] font-medium">Current Status</p>
+              <p className="text-3xl font-bold mt-2 text-[#0F172A] dark:text-[#F1F5F9]">
                 {todayAttendance?.checkIn && todayAttendance?.checkOut
                   ? "✓ Completed"
                   : todayAttendance?.checkIn
@@ -233,13 +238,13 @@ export default function EmployeeAttendancePage() {
             </div>
             <div className="text-right">
               {todayAttendance?.checkIn && !todayAttendance?.checkOut && (
-                <div className="bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200 px-4 py-2 rounded-lg">
+                <div className="bg-[#FEF3C7] dark:bg-[#78350F] text-[#92400E] dark:text-[#FCD34D] px-4 py-2 rounded-lg border border-[#FCD34D] dark:border-[#92400E]">
                   <p className="font-semibold">Action Required</p>
                   <p className="text-sm">Please check out</p>
                 </div>
               )}
               {todayAttendance?.checkIn && todayAttendance?.checkOut && (
-                <div className="bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200 px-4 py-2 rounded-lg">
+                <div className="bg-[#D1FAE5] dark:bg-[#064E3B] text-[#065F46] dark:text-[#6EE7B7] px-4 py-2 rounded-lg border border-[#10B981] dark:border-[#059669]">
                   <p className="font-semibold">All Done!</p>
                   <p className="text-sm">See you tomorrow</p>
                 </div>
@@ -259,7 +264,7 @@ export default function EmployeeAttendancePage() {
                 ? "Already Checked Out"
                 : "Check In"}
             </CardTitle>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+            <p className="text-sm text-[#64748B] dark:text-[#94A3B8] mt-1">
               {todayAttendance?.checkIn && !todayAttendance?.checkOut
                 ? "Capture your face to check out"
                 : todayAttendance?.checkIn && todayAttendance?.checkOut
@@ -279,8 +284,8 @@ export default function EmployeeAttendancePage() {
               }
             />
             {todayAttendance?.checkIn && todayAttendance?.checkOut && (
-              <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                <p className="text-sm text-blue-800 dark:text-blue-200">
+              <div className="mt-4 p-3 bg-[#DBEAFE] dark:bg-[#1E3A8A] rounded-lg border border-[#3B82F6] dark:border-[#60A5FA]">
+                <p className="text-sm text-[#1E40AF] dark:text-[#93C5FD]">
                   ✓ You have completed your attendance for today. You can check in again tomorrow.
                 </p>
               </div>
@@ -295,22 +300,22 @@ export default function EmployeeAttendancePage() {
             </CardHeader>
             <CardContent>
               {locationStatus === "checking" && (
-                <div className="flex items-center gap-2">
-                  <Clock className="animate-spin" />
+                <div className="flex items-center gap-2 text-[#64748B] dark:text-[#94A3B8]">
+                  <Clock className="animate-spin h-5 w-5" />
                   <p>Checking location...</p>
                 </div>
               )}
               {locationStatus === "allowed" && (
-                <div className="flex items-center gap-2 text-green-600">
-                  <CheckCircle />
-                  <p>Location verified</p>
+                <div className="flex items-center gap-2 text-[#10B981] dark:text-[#6EE7B7]">
+                  <CheckCircle className="h-5 w-5" />
+                  <p className="font-medium">Location verified</p>
                 </div>
               )}
               {locationStatus === "denied" && (
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-red-600">
-                    <XCircle />
-                    <p>Location not verified</p>
+                  <div className="flex items-center gap-2 text-[#EF4444] dark:text-[#FCA5A5]">
+                    <XCircle className="h-5 w-5" />
+                    <p className="font-medium">Location not verified</p>
                   </div>
                   <Button onClick={checkLocation} size="sm">
                     Retry Location Check
@@ -329,31 +334,31 @@ export default function EmployeeAttendancePage() {
                 <div className="space-y-3">
                   {todayAttendance.checkIn && (
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Check In</p>
-                      <p className="font-medium">
+                      <p className="text-sm text-[#64748B] dark:text-[#94A3B8] font-medium">Check In</p>
+                      <p className="font-semibold text-[#0F172A] dark:text-[#F1F5F9] mt-1">
                         {formatDateTime(todayAttendance.checkIn)}
                       </p>
                     </div>
                   )}
                   {todayAttendance.checkOut && (
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Check Out</p>
-                      <p className="font-medium">
+                      <p className="text-sm text-[#64748B] dark:text-[#94A3B8] font-medium">Check Out</p>
+                      <p className="font-semibold text-[#0F172A] dark:text-[#F1F5F9] mt-1">
                         {formatDateTime(todayAttendance.checkOut)}
                       </p>
                     </div>
                   )}
                   {!todayAttendance.checkIn && (
-                    <p className="text-gray-500">Not checked in yet</p>
+                    <p className="text-[#64748B] dark:text-[#94A3B8]">Not checked in yet</p>
                   )}
                 </div>
               ) : (
-                <p className="text-gray-500">No attendance recorded today</p>
+                <p className="text-[#64748B] dark:text-[#94A3B8]">No attendance recorded today</p>
               )}
             </CardContent>
           </Card>
         </div>
       </div>
-    </div>
+    </>
   );
 }

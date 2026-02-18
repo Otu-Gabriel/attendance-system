@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { stringToDescriptor, isFaceMatch } from "@/lib/face-recognition";
 import { isWithinRadius } from "@/lib/geolocation";
+import { determineAttendanceStatus } from "@/lib/attendance-rules";
 
 export async function POST(req: NextRequest) {
   try {
@@ -107,37 +108,139 @@ export async function POST(req: NextRequest) {
 
     const now = new Date();
 
-    if (!attendance) {
-      // Create new attendance record
-      attendance = await prisma.attendance.create({
-        data: {
-          userId: user.id,
-          date: today,
-          checkIn: type === "checkin" ? now : null,
-          checkOut: type === "checkout" ? now : null,
-          checkInImage: type === "checkin" ? imageData : null,
-          checkOutImage: type === "checkout" ? imageData : null,
-          checkInLat: type === "checkin" ? latitude : null,
-          checkInLng: type === "checkin" ? longitude : null,
-          checkOutLat: type === "checkout" ? latitude : null,
-          checkOutLng: type === "checkout" ? longitude : null,
-          status: "PRESENT",
-        },
-      });
-    } else {
-      // Update existing attendance record
-      if (type === "checkin" && !attendance.checkIn) {
-        attendance = await prisma.attendance.update({
-          where: { id: attendance.id },
-          data: {
-            checkIn: now,
-            checkInImage: imageData,
-            checkInLat: latitude,
-            checkInLng: longitude,
-            status: "PRESENT",
-          },
+    // Get attendance settings for check-in time validation
+    const attendanceSettings = await prisma.attendanceSettings.findFirst({
+      where: { isActive: true },
+      orderBy: { updatedAt: "desc" },
+    });
+
+    // If checking in, validate time rules
+    if (type === "checkin") {
+      if (attendanceSettings) {
+        const timeValidation = determineAttendanceStatus(now, {
+          checkInLatestBy: attendanceSettings.checkInLatestBy,
+          permitDurationMinutes: attendanceSettings.permitDurationMinutes,
+          autoMarkAbsentEnabled: attendanceSettings.autoMarkAbsentEnabled,
+          checkOutLatestBy: attendanceSettings.checkOutLatestBy || undefined,
         });
-      } else if (type === "checkout" && !attendance.checkOut) {
+
+        if (!timeValidation.canMark) {
+          // Check if already marked as absent
+          if (attendance && attendance.status === "ABSENT") {
+            return NextResponse.json(
+              {
+                error: timeValidation.message || "Cannot mark attendance. You have been marked as ABSENT.",
+              },
+              { status: 403 }
+            );
+          }
+
+          // Mark as absent if auto-mark is enabled
+          if (attendanceSettings.autoMarkAbsentEnabled) {
+            if (!attendance) {
+              await prisma.attendance.create({
+                data: {
+                  userId: user.id,
+                  date: today,
+                  status: "ABSENT",
+                },
+              });
+            } else {
+              await prisma.attendance.update({
+                where: { id: attendance.id },
+                data: { status: "ABSENT" },
+              });
+            }
+          }
+
+          return NextResponse.json(
+            {
+              error: timeValidation.message || "Check-in time has passed. Cannot mark attendance.",
+            },
+            { status: 403 }
+          );
+        }
+
+        // Determine status based on time
+        const attendanceStatus = timeValidation.status;
+        
+        if (!attendance) {
+          // Create new attendance record with determined status
+          attendance = await prisma.attendance.create({
+            data: {
+              userId: user.id,
+              date: today,
+              checkIn: now,
+              checkInImage: imageData,
+              checkInLat: latitude,
+              checkInLng: longitude,
+              status: attendanceStatus,
+            },
+          });
+        } else {
+          // Update existing attendance record
+          if (!attendance.checkIn) {
+            attendance = await prisma.attendance.update({
+              where: { id: attendance.id },
+              data: {
+                checkIn: now,
+                checkInImage: imageData,
+                checkInLat: latitude,
+                checkInLng: longitude,
+                status: attendanceStatus,
+              },
+            });
+          } else {
+            return NextResponse.json(
+              { error: "Already checked in today" },
+              { status: 400 }
+            );
+          }
+        }
+      } else {
+        // No settings configured, use default behavior
+        if (!attendance) {
+          attendance = await prisma.attendance.create({
+            data: {
+              userId: user.id,
+              date: today,
+              checkIn: now,
+              checkInImage: imageData,
+              checkInLat: latitude,
+              checkInLng: longitude,
+              status: "PRESENT",
+            },
+          });
+        } else {
+          if (!attendance.checkIn) {
+            attendance = await prisma.attendance.update({
+              where: { id: attendance.id },
+              data: {
+                checkIn: now,
+                checkInImage: imageData,
+                checkInLat: latitude,
+                checkInLng: longitude,
+                status: "PRESENT",
+              },
+            });
+          } else {
+            return NextResponse.json(
+              { error: "Already checked in today" },
+              { status: 400 }
+            );
+          }
+        }
+      }
+    } else {
+      // Checkout logic (no time restrictions for now)
+      if (!attendance) {
+        return NextResponse.json(
+          { error: "Please check in first before checking out" },
+          { status: 400 }
+        );
+      }
+
+      if (!attendance.checkOut) {
         attendance = await prisma.attendance.update({
           where: { id: attendance.id },
           data: {
@@ -149,12 +252,7 @@ export async function POST(req: NextRequest) {
         });
       } else {
         return NextResponse.json(
-          {
-            error:
-              type === "checkin"
-                ? "Already checked in today"
-                : "Already checked out today",
-          },
+          { error: "Already checked out today" },
           { status: 400 }
         );
       }

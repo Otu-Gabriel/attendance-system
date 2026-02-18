@@ -103,6 +103,19 @@ model LocationSetting {
   @@unique([name])
 }
 
+model AttendanceSettings {
+  id                    String   @id @default(cuid())
+  checkInLatestBy       String   @default("09:00") // Format: HH:mm (24-hour)
+  permitDurationMinutes Int      @default(30) // Grace period after checkInLatestBy
+  autoMarkAbsentEnabled Boolean  @default(true) // Auto-mark absent if no check-in
+  checkOutLatestBy       String?  // Format: HH:mm (optional)
+  isActive               Boolean  @default(true)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  @@unique([id])
+}
+
 enum UserRole {
   ADMIN
   EMPLOYEE
