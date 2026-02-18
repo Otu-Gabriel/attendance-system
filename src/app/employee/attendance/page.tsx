@@ -161,8 +161,19 @@ export default function EmployeeAttendancePage() {
       const data = await res.json();
 
       if (res.ok) {
-        toast.success(data.message);
-        fetchTodayAttendance();
+        if (type === "checkin") {
+          toast.success(data.message + " Redirecting to dashboard...");
+          fetchTodayAttendance();
+          
+          // Redirect to dashboard after successful check-in to prevent accidental check-out
+          setTimeout(() => {
+            router.push("/employee/dashboard");
+          }, 2000); // Wait 2 seconds to show success message before redirect
+        } else {
+          // For check-out, stay on the page
+          toast.success(data.message);
+          fetchTodayAttendance();
+        }
       } else {
         toast.error(data.error || "Failed to mark attendance");
       }

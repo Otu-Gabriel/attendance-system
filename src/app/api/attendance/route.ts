@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const isWithinAllowedLocation = locationSettings.some((location) =>
+    const isWithinAllowedLocation = locationSettings.some((location: any) =>
       isWithinRadius(
         latitude,
         longitude,
@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           error: "You are not within the allowed location",
-          allowedLocations: locationSettings.map((loc) => ({
+          allowedLocations: locationSettings.map((loc: any) => ({
             name: loc.name,
             address: loc.address,
           })),

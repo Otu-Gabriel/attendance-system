@@ -11,6 +11,10 @@
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
+    "db:reset": "tsx scripts/reset-db.ts",
+    "db:seed": "tsx scripts/seed.ts",
+    "db:recreate": "tsx scripts/recreate-db.ts",
+    "db:setup-admin": "tsx scripts/setup-admin.ts",
     "download-models": "node scripts/download-models.js"
   },
   "dependencies": {
@@ -43,6 +47,7 @@
     "eslint-config-next": "16.1.6",
     "prisma": "^6.19.2",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }
